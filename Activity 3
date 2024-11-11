@@ -7,7 +7,7 @@ def generate_sorted_data(size):
     array = arrays.Array(size)                                      # Creating array of user input size
     for i in range(size):
        array[i] = random.randint(1, 100)                           # Inserting random generated values into the array
-    print ("Unsorted Array:",array)
+    print ("Original Array (Insertion Sort):",array)
 
     for i in range(1, len(array)):
        j = array[i]                                                # Current element to be placed in the sorted section
@@ -21,10 +21,10 @@ def generate_sorted_data(size):
 
     return array 
 
-"""Function call"""
-size = 7
+#Function call
+size = int(input("Enter the size of the array: "))
 sorted_array = generate_sorted_data(size)
-print("Sorted Array: ",sorted_array)
+print("Sorted Array (Insertion Sort):",sorted_array)
 
 """"Binary search function"""
 def binary_search(sorted_array, target):
@@ -58,35 +58,48 @@ if result is not None:
 else:
     print(f"Target {target} not found: NONE")
 
-import random
+
+""" This code uses mergesort method to sort through a randomized array from 1-100 consisting of 10 integers"""
+
 import array as arr
+
+
+#Generates an array of random integers
 
 def generate_random_data(size):
     data = arr.array('i', [random.randint(1, 100) for i in range(size)])
     return data
 
+    
+#Merge sort method is used where two  halves of an array are sorted then merged
 
 def merge_sort(arr):
     def merge_sort2(arr, left, right):
+        # Base case: if the array has one element, it is already sorted
         if left >= right:
             return 0
         
         else:
+            #Find the midpoint to split the array
             mid = (left + right) // 2
+            #Recursively sort the left half
             merge_sort2(arr, left, mid)
+            # Recursively sort the right half
             merge_sort2(arr, mid + 1, right)
+            # Merge the sorted halves
             merge(arr, left, mid, right)
     
     merge_sort2(arr, 0, len(arr) - 1)
     return arr
 
 def merge(arr, left, mid, right):
+    #Create temporary arrays for the left and right halves
     left_half = arr[left:mid + 1]
     right_half = arr[mid + 1:right + 1]
 
-    i = j = 0
-    k = left
-
+    i = j = 0 #Pointers for left_half and right_half
+    k = left #Pointer for main array
+#Merge the two halves back into the main array
     while i < len(left_half) and j < len(right_half):
         if left_half[i] < right_half[j]:
             arr[k] = left_half[i]
@@ -95,34 +108,37 @@ def merge(arr, left, mid, right):
             arr[k] = right_half[j]
             j += 1
         k += 1
-
+#Copy any remaining elements from left_half 
     while i < len(left_half):
         arr[k] = left_half[i]
         i = i + 1
         k = k + 1
-
+#Copy any remaining elements from right_half 
     while j < len(right_half):
         arr[k] = right_half[j]
         j = j + 1
         k = k + 1
 
 
-
+#generate an array of 10 random integers
 randomlist = generate_random_data(10)
-print("Original array (mergesort):", list(randomlist))
+print("Original array (Merge Sort):", list(randomlist)) #convert to list for printing
+#perform merge sort on a copy of the random array
 sorted_data_merge = merge_sort(randomlist[:])  
-print("Sorted array (mergesort):", list(sorted_data_merge))
+print("Sorted array (Merge Sort):", list(sorted_data_merge))#convert to list for printing
+
 
 """: Search Performance Comparison
 This phase compares the merge sort sorted data using linear and binary search"""
-#linear Search
+
+#Linear Search
 def linear_search(arr, target):
     for i in range(len(arr)):
         if arr[i] == target:
             return i
     return None
 
-#binary search
+#Binary Search
 def binary_search(arr, target):
     left, right = 0, len(arr) - 1
     while left <= right:
@@ -155,7 +171,7 @@ print("Binary search > Linear search")
 
 """
 ADDITIONAL QUESTION REFLECTION
-the sorting algorithm you choose really imacpts how quick searches work, 
+The sorting algorithm you choose really impacts how quick searches work, 
 binary needs sorted data and is very quick on big data sets with O(logn), 
 while linear is slower at O(n) especially if the data grows in size.
 merge sort is quicker with O(nlogn) help binary search to work 
